@@ -1,4 +1,4 @@
-CREATE VIEW view_issue_open_unassigned
+CREATE VIEW view_issue_open
 AS
 SELECT *
 FROM issue

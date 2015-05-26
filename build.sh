@@ -4,7 +4,11 @@ source domains.conf
 source credentials.conf
 TEMPLATE='/tmp/$USERmysqltemplate.txt'
 
-cat users/* tables/* triggers/* views/* permissions/* > $TEMPLATE
+touch $TEMPLATE
+
+echo 'START TRANSACTION;' >> $TEMPLATE
+cat users/* sequences/* tables/* triggers/* views/* routines/* permissions/* >> $TEMPLATE
+echo 'COMMIT;' >> $TEMPLATE
 
 eval "echo \"$(< $TEMPLATE)\"" > baseline.sql
 
