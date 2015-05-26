@@ -10,12 +10,14 @@ NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
-    SELECT next_value INTO @var_issue_id FROM seq_issue_id
+    SELECT next_value INTO arg_issue_id 
+    FROM seq_issue_id
     ;
-    INSERT INTO issue (id, content, issued_at, issued_by)
-    SELECT @var_issue_id, arg_issue_content, NOW( ), arg_party_id
+    INSERT INTO issue (id, issued_at, issued_by)
+    SELECT arg_issue_id, NOW( ), arg_party_id
     ;
-    SELECT @var_issue_id INTO arg_issue_id
+    INSERT INTO comment (issue_id, id, author_id, content, posted_at) VALUES
+    (arg_issue_id, 1, arg_party_id, arg_issue_content, NOW( ))
     ;
 END
 ENDROUTINE

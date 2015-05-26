@@ -1,7 +1,7 @@
 CREATE VIEW view_issue_assigned
 AS
 SELECT s.*, a.assignee_id, a.assigned_id, a.assigned_at
-FROM issue AS s JOIN issue_assignation AS a ON s.id = a.issue_id
+FROM view_issue AS s JOIN issue_assignation AS a ON s.id = a.issue_id
 WHERE a.assigned_at = 
     (
     	SELECT MAX(suba.assigned_at)
