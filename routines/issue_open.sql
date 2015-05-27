@@ -2,7 +2,7 @@ DELIMITER ENDROUTINE
 CREATE PROCEDURE issue_open
 (
       IN arg_party_id      $PARTY_ID_TYPE
-    , IN arg_issue_content $ISSUE_CONTENT_TYPE
+    , IN arg_issue_content $COMMENT_CONTENT_TYPE
     , OUT arg_issue_id     $ISSUE_ID_TYPE
 )
 LANGUAGE SQL
