@@ -14,7 +14,7 @@ SQL SECURITY DEFINER
 BEGIN
     SELECT next_value INTO arg_comment_id
     FROM seq_comment_id
-    WHERE issue_id = arg_issue_id
+    WHERE seq_comment_id.issue_id = arg_issue_id
     ;
     INSERT INTO comment (issue_id, id, author_id, content, reply_to, posted_at) VALUES
     (arg_issue_id, arg_comment_id, arg_autor_id, arg_content, COALESCE(arg_reply_to, 1), NOW( ))

@@ -10,6 +10,9 @@ echo 'START TRANSACTION;' >> $TEMPLATE
 cat users/* sequences/* tables/* triggers/* views/* routines/* permissions/* >> $TEMPLATE
 echo 'COMMIT;' >> $TEMPLATE
 
-eval "echo \"$(< $TEMPLATE)\"" > baseline.sql
+BASELINE=baseline.sql
+chmod 644 $BASELINE
+eval "echo \"$(< $TEMPLATE)\"" > $BASELINE
+chmod 444 $BASELINE
 
 rm $TEMPLATE

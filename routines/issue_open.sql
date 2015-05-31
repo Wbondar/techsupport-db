@@ -14,7 +14,7 @@ BEGIN
     FROM seq_issue_id
     ;
     INSERT INTO issue (id, issued_at, issued_by)
-    SELECT arg_issue_id, NOW( ), arg_party_id
+    VALUES (arg_issue_id, NOW( ), arg_party_id)
     ;
     INSERT INTO comment (issue_id, id, author_id, content, posted_at) VALUES
     (arg_issue_id, 1, arg_party_id, arg_issue_content, NOW( ))

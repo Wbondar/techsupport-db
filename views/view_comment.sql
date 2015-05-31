@@ -3,5 +3,5 @@ AS
 SELECT * 
 FROM comment
 WHERE reply_to IS NOT NULL
-ORDER BY reply_to DESC
+ORDER BY reply_to, posted_at DESC
 ;
