@@ -7,7 +7,7 @@ TEMPLATE='/tmp/$USERmysqltemplate.txt'
 touch $TEMPLATE
 
 echo 'START TRANSACTION;' >> $TEMPLATE
-cat users/* sequences/* tables/* triggers/* views/* routines/* permissions/* >> $TEMPLATE
+cat tables/* sequences/* triggers/* views/* routines/* >> $TEMPLATE
 echo 'COMMIT;' >> $TEMPLATE
 
 BASELINE=baseline.sql

@@ -10,8 +10,12 @@ NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
+    START TRANSACTION 
+    ;
     INSERT INTO issue_assignation (issue_id, assigned_at, assignee_id, assigned_id) VALUES
     (arg_issue_id, NOW( ), arg_assignee_id, arg_assigned_id)
+    ;
+    COMMIT 
     ;
 END
 ENDROUTINE

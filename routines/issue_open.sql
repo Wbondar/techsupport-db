@@ -10,6 +10,8 @@ NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
+    START TRANSACTION 
+    ;
     SELECT next_value INTO arg_issue_id 
     FROM seq_issue_id
     ;
@@ -18,6 +20,8 @@ BEGIN
     ;
     INSERT INTO comment (issue_id, id, author_id, content, posted_at) VALUES
     (arg_issue_id, 1, arg_party_id, arg_issue_content, NOW( ))
+    ;
+    COMMIT 
     ;
 END
 ENDROUTINE

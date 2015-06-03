@@ -9,8 +9,12 @@ NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
+    START TRANSACTION 
+    ;
     INSERT INTO issue_closing (issue_id, closed_at, closed_by) VALUES
     (arg_issue_id, NOW( ), arg_party_id)
+    ;
+    COMMIT 
     ;
 END
 ENDROUTINE
