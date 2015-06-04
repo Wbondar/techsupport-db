@@ -6,3 +6,4 @@ CREATE TABLE seq_permission_id
         PRIMARY KEY (next_value, current_value)
 ) ENGINE=InnoDB
 ;
+INSERT INTO seq_permission_id ( ) VALUES ( );
