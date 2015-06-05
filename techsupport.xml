@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="techsupport" type="MySQL - 5.6.24-0ubuntu2">
+   <tables>
+      <table name="comment" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="issue_id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <parent column="id" foreignKey="fk_comment_issue_id" implied="false" onDeleteCascade="false" table="issue"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="permission"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="author_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_comment_author_id" implied="false" onDeleteCascade="false" table="party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="posted_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="4" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="5" name="reply_to" nullable="true" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <primaryKey column="issue_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="issue_id"/>
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="fk_comment_author_id" unique="false">
+            <column ascending="true" name="author_id"/>
+         </index>
+      </table>
+      <table name="issue" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <child column="issue_id" foreignKey="fk_comment_issue_id" implied="false" onDeleteCascade="false" table="comment"/>
+            <child column="issue_id" foreignKey="fk_issue_closing_issue_id" implied="false" onDeleteCascade="true" table="issue_closing"/>
+            <child column="issue_id" foreignKey="fk_seq_comment_id_issue_id" implied="false" onDeleteCascade="true" table="seq_comment_id"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="issued_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="issued_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_issue_issud_by" implied="false" onDeleteCascade="false" table="party"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <primaryKey column="issued_by" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+            <column ascending="true" name="issued_by"/>
+         </index>
+         <index name="fk_issue_issud_by" unique="false">
+            <column ascending="true" name="issued_by"/>
+         </index>
+      </table>
+      <table name="issue_assignation" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="issue_id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <parent column="issue_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="seq_comment_id"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="assigned_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="assigned_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_issue_assignation_assigned_id" implied="false" onDeleteCascade="false" table="party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="assignee_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_issue_assignation_assignee_id" implied="false" onDeleteCascade="false" table="party"/>
+         </column>
+         <primaryKey column="assigned_at" sequenceNumberInPK="1"/>
+         <primaryKey column="issue_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="issue_id"/>
+            <column ascending="true" name="assigned_at"/>
+         </index>
+         <index name="fk_issue_assignation_assigned_id" unique="false">
+            <column ascending="true" name="assigned_id"/>
+         </index>
+         <index name="fk_issue_assignation_assignee_id" unique="false">
+            <column ascending="true" name="assignee_id"/>
+         </index>
+      </table>
+      <table name="issue_closing" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="issue_id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <parent column="id" foreignKey="fk_issue_closing_issue_id" implied="false" onDeleteCascade="true" table="issue"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="closed_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="closed_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_issue_closing_closed_by" implied="false" onDeleteCascade="false" table="party"/>
+         </column>
+         <primaryKey column="closed_by" sequenceNumberInPK="1"/>
+         <primaryKey column="issue_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="issue_id"/>
+            <column ascending="true" name="closed_by"/>
+         </index>
+         <index name="fk_issue_closing_closed_by" unique="false">
+            <column ascending="true" name="closed_by"/>
+         </index>
+      </table>
+      <table name="party" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <child column="author_id" foreignKey="fk_comment_author_id" implied="false" onDeleteCascade="false" table="comment"/>
+            <child column="issued_by" foreignKey="fk_issue_issud_by" implied="false" onDeleteCascade="false" table="issue"/>
+            <child column="assigned_id" foreignKey="fk_issue_assignation_assigned_id" implied="false" onDeleteCascade="false" table="issue_assignation"/>
+            <child column="assignee_id" foreignKey="fk_issue_assignation_assignee_id" implied="false" onDeleteCascade="false" table="issue_assignation"/>
+            <child column="closed_by" foreignKey="fk_issue_closing_closed_by" implied="false" onDeleteCascade="false" table="issue_closing"/>
+            <child column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="party_category"/>
+            <child column="party_id" foreignKey="fk_party_permissions_party_id" implied="false" onDeleteCascade="true" table="party_permissions"/>
+            <child column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="view_party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="12" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="password_hash" nullable="false" remarks="" size="255" type="TINYBLOB"/>
+         <column autoUpdated="false" digits="0" id="3" name="category_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_category_id" implied="false" onDeleteCascade="false" table="party_category"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="fk_party_category_id" unique="false">
+            <column ascending="true" name="category_id"/>
+         </index>
+         <index name="uk_party_name" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="party_category" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <child column="category_id" foreignKey="fk_party_category_id" implied="false" onDeleteCascade="false" table="party"/>
+            <child column="parent_id" foreignKey="fk_party_category_parent_id" implied="false" onDeleteCascade="false" table="party_category"/>
+            <child column="party_category_id" foreignKey="fk_party_category_permissions_party_category_id" implied="false" onDeleteCascade="true" table="party_category_permissions"/>
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="100" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="parent_id" nullable="true" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_category_parent_id" implied="false" onDeleteCascade="false" table="party_category"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="fk_party_category_parent_id" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+      </table>
+      <table name="party_category_permissions" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="party_category_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_category_permissions_party_category_id" implied="false" onDeleteCascade="true" table="party_category"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_category_permissions_permission_id" implied="false" onDeleteCascade="false" table="permission"/>
+         </column>
+         <primaryKey column="party_category_id" sequenceNumberInPK="1"/>
+         <primaryKey column="permission_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="party_category_id"/>
+            <column ascending="true" name="permission_id"/>
+         </index>
+         <index name="fk_party_category_permissions_permission_id" unique="false">
+            <column ascending="true" name="permission_id"/>
+         </index>
+      </table>
+      <table name="party_permissions" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="party_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_permissions_party_id" implied="false" onDeleteCascade="true" table="party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="fk_party_permissions_permission_id" implied="false" onDeleteCascade="false" table="permission"/>
+         </column>
+         <primaryKey column="party_id" sequenceNumberInPK="1"/>
+         <primaryKey column="permission_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="party_id"/>
+            <column ascending="true" name="permission_id"/>
+         </index>
+         <index name="fk_party_permissions_permission_id" unique="false">
+            <column ascending="true" name="permission_id"/>
+         </index>
+      </table>
+      <table name="permission" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <child column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="comment"/>
+            <child column="permission_id" foreignKey="fk_party_category_permissions_permission_id" implied="false" onDeleteCascade="false" table="party_category_permissions"/>
+            <child column="permission_id" foreignKey="fk_party_permissions_permission_id" implied="false" onDeleteCascade="false" table="party_permissions"/>
+            <child column="permission_id" foreignKey="fk_permission_routine_permission_id_permission_id" implied="false" onDeleteCascade="true" table="permission_routine"/>
+            <child column="permission_id" foreignKey="fk_permission_table_permission_id_permission_id" implied="false" onDeleteCascade="true" table="permission_table"/>
+            <child column="permission_id" foreignKey="fk_seq_permission_routine_id_permission_id" implied="false" onDeleteCascade="true" table="seq_permission_routine_id"/>
+            <child column="permission_id" foreignKey="fk_seq_permission_table_id_permission_id" implied="false" onDeleteCascade="true" table="seq_permission_table_id"/>
+            <child column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="view_comment"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="title" nullable="false" remarks="" size="100" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="uk_permission_title" unique="true">
+            <column ascending="true" name="title"/>
+         </index>
+      </table>
+      <table name="permission_routine" numRows="5" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="fk_permission_routine_permission_id_permission_id" implied="false" onDeleteCascade="true" table="permission"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="permission_routine_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="2" name="routine_name" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <column autoUpdated="false" digits="0" id="3" name="routine_type" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <column autoUpdated="false" digits="0" id="4" name="proc_priv" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <primaryKey column="permission_id" sequenceNumberInPK="1"/>
+         <primaryKey column="permission_routine_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="permission_id"/>
+            <column ascending="true" name="permission_routine_id"/>
+         </index>
+      </table>
+      <table name="permission_table" numRows="5" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="fk_permission_table_permission_id_permission_id" implied="false" onDeleteCascade="true" table="permission"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="permission_table_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="2" name="table_name" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <column autoUpdated="false" digits="0" id="3" name="table_priv" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <primaryKey column="permission_id" sequenceNumberInPK="1"/>
+         <primaryKey column="permission_table_id" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="permission_id"/>
+            <column ascending="true" name="permission_table_id"/>
+         </index>
+      </table>
+      <table name="seq_comment_id" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="0" digits="0" id="0" name="current_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="next_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="2" name="issue_id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <child column="issue_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="issue_assignation"/>
+            <child column="issue_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="view_comment"/>
+            <parent column="id" foreignKey="fk_seq_comment_id_issue_id" implied="false" onDeleteCascade="true" table="issue"/>
+         </column>
+         <primaryKey column="issue_id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="issue_id"/>
+         </index>
+      </table>
+      <table name="seq_issue_id" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="0" digits="0" id="0" name="current_value" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="next_value" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+      </table>
+      <table name="seq_party_category_id" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="1" digits="0" id="0" name="next_value" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="1" name="current_value" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <primaryKey column="current_value" sequenceNumberInPK="1"/>
+         <primaryKey column="next_value" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="next_value"/>
+            <column ascending="true" name="current_value"/>
+         </index>
+      </table>
+      <table name="seq_party_id" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="1" digits="0" id="0" name="next_value" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="1" name="current_value" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <primaryKey column="current_value" sequenceNumberInPK="1"/>
+         <primaryKey column="next_value" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="next_value"/>
+            <column ascending="true" name="current_value"/>
+         </index>
+      </table>
+      <table name="seq_permission_id" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="0" digits="0" id="0" name="current_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="next_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <primaryKey column="current_value" sequenceNumberInPK="1"/>
+         <primaryKey column="next_value" sequenceNumberInPK="2"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="next_value"/>
+            <column ascending="true" name="current_value"/>
+         </index>
+      </table>
+      <table name="seq_permission_routine_id" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="0" digits="0" id="0" name="current_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="next_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="2" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="fk_seq_permission_routine_id_permission_id" implied="false" onDeleteCascade="true" table="permission"/>
+         </column>
+         <primaryKey column="permission_id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="permission_id"/>
+         </index>
+      </table>
+      <table name="seq_permission_table_id" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="0" digits="0" id="0" name="current_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="next_value" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="2" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <child column="permission_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="view_party_category_permissions"/>
+            <child column="permission_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="view_party_permissions"/>
+            <parent column="id" foreignKey="fk_seq_permission_table_id_permission_id" implied="false" onDeleteCascade="true" table="permission"/>
+         </column>
+         <primaryKey column="permission_id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="permission_id"/>
+         </index>
+      </table>
+      <table name="view_comment" remarks="" type="VIEW" viewSql="select `techsupport`.`comment`.`issue_id` AS `issue_id`,`techsupport`.`comment`.`id` AS `id`,`techsupport`.`comment`.`author_id` AS `author_id`,`techsupport`.`comment`.`posted_at` AS `posted_at`,`techsupport`.`comment`.`content` AS `content`,`techsupport`.`comment`.`reply_to` AS `reply_to` from `techsupport`.`comment` where (`techsupport`.`comment`.`reply_to` is not null) order by `techsupport`.`comment`.`reply_to`,`techsupport`.`comment`.`posted_at` desc">
+         <column autoUpdated="false" digits="0" id="0" name="issue_id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED">
+            <parent column="issue_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="seq_comment_id"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="permission"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="author_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="3" name="posted_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="4" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="5" name="reply_to" nullable="true" remarks="" size="3" type="TINYINT UNSIGNED"/>
+      </table>
+      <table name="view_issue" remarks="" type="VIEW" viewSql="select `techsupport`.`issue`.`id` AS `id`,`techsupport`.`issue`.`issued_at` AS `issued_at`,`techsupport`.`issue`.`issued_by` AS `issued_by`,coalesce(`techsupport`.`comment`.`content`,'Description of the issue is missing.') AS `content` from (`techsupport`.`issue` join `techsupport`.`comment` on((`techsupport`.`issue`.`id` = `techsupport`.`comment`.`issue_id`))) where ((`techsupport`.`comment`.`id` = 1) and isnull(`techsupport`.`comment`.`reply_to`))">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="issued_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="issued_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="" digits="0" id="3" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+      </table>
+      <table name="view_issue_assigned" remarks="" type="VIEW" viewSql="select `s`.`id` AS `id`,`s`.`issued_at` AS `issued_at`,`s`.`issued_by` AS `issued_by`,`s`.`content` AS `content`,`a`.`assignee_id` AS `assignee_id`,`a`.`assigned_id` AS `assigned_id`,`a`.`assigned_at` AS `assigned_at` from (`techsupport`.`view_issue` `s` join `techsupport`.`issue_assignation` `a` on((`s`.`id` = `a`.`issue_id`))) where ((`a`.`assigned_at` = (select max(`suba`.`assigned_at`) from `techsupport`.`issue_assignation` `suba` where (`a`.`issue_id` = `suba`.`issue_id`))) and (not(`s`.`id` in (select `techsupport`.`issue_closing`.`issue_id` from `techsupport`.`issue_closing`))))">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="issued_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="issued_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="" digits="0" id="3" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="assignee_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="5" name="assigned_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="6" name="assigned_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+      </table>
+      <table name="view_issue_closed" remarks="" type="VIEW" viewSql="select `view_issue`.`id` AS `id`,`view_issue`.`issued_at` AS `issued_at`,`view_issue`.`issued_by` AS `issued_by`,`view_issue`.`content` AS `content`,`techsupport`.`issue_closing`.`closed_by` AS `closed_by`,`techsupport`.`issue_closing`.`closed_at` AS `closed_at` from (`techsupport`.`view_issue` join `techsupport`.`issue_closing` on((`view_issue`.`id` = `techsupport`.`issue_closing`.`issue_id`))) where (`view_issue`.`id` = `techsupport`.`issue_closing`.`issue_id`)">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="issued_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="issued_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="" digits="0" id="3" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="closed_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="5" name="closed_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+      </table>
+      <table name="view_issue_open" remarks="" type="VIEW" viewSql="select `view_issue`.`id` AS `id`,`view_issue`.`issued_at` AS `issued_at`,`view_issue`.`issued_by` AS `issued_by`,`view_issue`.`content` AS `content` from `techsupport`.`view_issue` where ((not(`view_issue`.`id` in (select `techsupport`.`issue_closing`.`issue_id` from `techsupport`.`issue_closing`))) and (not(`view_issue`.`id` in (select `techsupport`.`issue_assignation`.`issue_id` from `techsupport`.`issue_assignation`))))">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="20" type="BIGINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="issued_at" nullable="false" remarks="" size="19" type="DATETIME"/>
+         <column autoUpdated="false" digits="0" id="2" name="issued_by" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="" digits="0" id="3" name="content" nullable="false" remarks="" size="300" type="VARCHAR"/>
+      </table>
+      <table name="view_party" remarks="" type="VIEW" viewSql="select `techsupport`.`party`.`id` AS `id`,`techsupport`.`party`.`name` AS `name`,`techsupport`.`party`.`password_hash` AS `password_hash`,`techsupport`.`party`.`category_id` AS `category_id` from `techsupport`.`party`">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="party"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="12" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="password_hash" nullable="false" remarks="" size="255" type="TINYBLOB"/>
+         <column autoUpdated="false" digits="0" id="3" name="category_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+      </table>
+      <table name="view_party_category_permissions" remarks="" type="VIEW" viewSql="select `techsupport`.`party_category_permissions`.`party_category_id` AS `party_category_id`,`techsupport`.`party_category_permissions`.`permission_id` AS `permission_id` from `techsupport`.`party_category_permissions`">
+         <column autoUpdated="false" digits="0" id="0" name="party_category_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="permission_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="seq_permission_table_id"/>
+         </column>
+      </table>
+      <table name="view_party_permissions" remarks="" type="VIEW" viewSql="select `techsupport`.`party_permissions`.`party_id` AS `party_id`,`techsupport`.`party_permissions`.`permission_id` AS `permission_id` from `techsupport`.`party_permissions`">
+         <column autoUpdated="false" digits="0" id="0" name="party_id" nullable="false" remarks="" size="5" type="SMALLINT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="permission_id" nullable="false" remarks="" size="3" type="TINYINT UNSIGNED">
+            <parent column="permission_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="seq_permission_table_id"/>
+         </column>
+      </table>
+   </tables>
+</database>
