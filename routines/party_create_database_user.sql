@@ -19,14 +19,23 @@ BEGIN
     FROM information_schema.global_variables
     WHERE variable_name = 'hostname'
     ;*/
-    SET @sql = CONCAT('CREATE USER ', '\'', @var_username, '\'@\'', '$HOST', '\'', ' IDENTIFIED BY PASSWORD ', '\'', @var_party_password_hash, '\'')
+    SET @create_user_dynamically_sql = CONCAT('CREATE USER ', '\'', @var_username, '\'@\'', '$HOST', '\'', ' IDENTIFIED BY PASSWORD ', '\'', @var_party_password_hash, '\'')
     ;
     PREPARE create_user_dynamically 
-    FROM @sql
+    FROM @create_user_dynamically_sql
     ;
     EXECUTE create_user_dynamically
     ;
     DEALLOCATE PREPARE create_user_dynamically
+    ;
+    SET @grant_privilege_on_executing_procedures_dynamically_sql = CONCAT('GRANT SELECT ON mysql.proc TO ', '\'', @var_username, '\'@\'', '$HOST', '\'')
+    ;
+    PREPARE grant_privilege_on_executing_procedures_dynamically 
+    FROM @grant_privilege_on_executing_procedures_dynamically_sql
+    ;
+    EXECUTE grant_privilege_on_executing_procedures_dynamically
+    ;
+    DEALLOCATE PREPARE grant_privilege_on_executing_procedures_dynamically
     ;
     FLUSH PRIVILEGES
     ;
