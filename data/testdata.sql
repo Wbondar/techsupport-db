@@ -7,8 +7,9 @@ INSERT INTO permission_table (permission_id, permission_table_id, table_name, ta
   (1, 1, 'view_issue_open', 'select')
 , (1, 2, 'view_issue_assigned', 'select')
 , (1, 3, 'view_issue_closed', 'select')
-, (1, 4, 'view_party', 'select')
-, (1, 5, 'view_comment', 'select')
+, (1, 4, 'view_issue_complete', 'select')
+, (1, 5, 'view_party', 'select')
+, (1, 6, 'view_comment', 'select')
 ;
 INSERT INTO permission_routine (permission_id, permission_routine_id, routine_name, routine_type, proc_priv) VALUES
   (1, 1, 'issue_open', 'PROCEDURE', 'Execute')
@@ -23,7 +24,7 @@ INSERT INTO party_category (id, name) VALUES
 INSERT INTO party_category_permissions (party_category_id, permission_id) VALUES 
   (1, 1)
 ;
-CALL party_create ('root', 'root', 1, @var_party_id)
+CALL party_create ('tested', 'tested', 1, @var_party_id)
 ;
 SELECT * 
 FROM party 
